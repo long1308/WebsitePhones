@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react'
 //interface
 import {Iproduct} from "./interfaces/product"
 //bootstrap
-import "bootstrap/dist/css/bootstrap.min.css"
+// import "bootstrap/dist/css/bootstrap.min.css"
 import { Route, Routes } from 'react-router-dom'
-import BaseLayout from './components/layouts/baseLayout'
-import AdminLayout from './components/layouts/adminLayout'
+import BaseLayout from './components/layouts/Client/baseLayout'
+import AdminLayout from './components/layouts/Admin/adminLayout'
 import { addProduct, deleteProduct, getAllProducts, updateProduct } from './api/product'
 import AdminProduct from './pages/AdminProduct'
-import Signin from './pages/Signin'
-import Signup from './pages/Signup'
+import Signin from './pages/Client/Signin'
+import Signup from './pages/Client/Signup'
 import AdminProductAdd from './pages/AdminProductAdd'
 import AdminEditProduct from './pages/AdminEditProduct'
+import HomePages from './pages/Client/HomePage'
+import ProductDetail from './pages/Client/ProductDetail'
 
 
 function App() {
@@ -53,9 +55,10 @@ function App() {
       <Routes>
         {/* client */}
           <Route path='/' element={<BaseLayout />}> 
-            <Route index  element={"Home Page"} />
+            <Route index  element={<HomePages />} />
             <Route path='signin' element={<Signin />} />
             <Route path='signup' element={<Signup />} />
+            <Route path='products/:id' element={<ProductDetail />} />
           </Route>
           {/* admin */}
           <Route path='/admin' element={<AdminLayout />}>

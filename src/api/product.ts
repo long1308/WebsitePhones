@@ -2,7 +2,11 @@ import { Iproduct } from "../interfaces/product";
 import insntance from "./insntace";
 const user = JSON.parse(localStorage.getItem("user")!);
 export const getAllProducts = () =>{
-    return insntance.get("/products");
+    return insntance.get("/products",{
+        headers:{
+            Authorization: `Bearer ${user.accessToken}`
+        }
+    });
 }
 export const deleteProduct = (id:number|string) =>{
     return insntance.delete(`/products/${id}`,{
