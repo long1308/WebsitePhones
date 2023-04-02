@@ -33,7 +33,7 @@ const Sideber = (props: Props) => {
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 ">
-          <ul className="space-y-2 font-medium">
+          <ul className="space-y-2 ">
             <li>
               <a
                 href="#"
@@ -146,7 +146,7 @@ const Sideber = (props: Props) => {
               </a>
             </li>
           </ul>
-          <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+          <ul className="pt-4 mt-4 space-y-2  border-t border-gray-200 dark:border-gray-700">
             <li>
               <a
                 href="#"
