@@ -55,10 +55,7 @@ const AdminProduct = ({ products, onRemove }: AdminProductProps) => {
                       {product.name}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      <Image
-                        width={100}
-                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                      />
+                      <Image width={100} src={product.image} />
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       {product.price}

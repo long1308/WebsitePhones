@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 //interface
-import { Iproduct } from "./interfaces/product";
+import { Iproduct, IproductCategory } from "./interfaces/product";
 //bootstrap
 // import "bootstrap/dist/css/bootstrap.min.css"
 //ant
@@ -18,19 +18,27 @@ import {
 import AdminProduct from "./pages/Admin/AdminProduct";
 import Signin from "./pages/Client/Signin";
 import Signup from "./pages/Client/Signup";
-import AdminProductAdd from "./pages/AdminProductAdd";
-import AdminEditProduct from "./pages/AdminEditProduct";
+import AdminProductAdd from "./pages/Admin/AdminProductAdd";
+import AdminEditProduct from "./pages/Admin/AdminEditProduct";
 import HomePages from "./pages/Client/HomePage";
 import ProductDetail from "./pages/Client/ProductDetail";
 import DashBoardPage from "./pages/Admin/DashBoardPage";
 
+import { addCategory, deleteCategory, getAllProductCategory, updateCategory } from "./api/categorys";
+import AdminCategory from "./pages/Admin/Categorys/AdminCategory";
+import AdminCategoryAdd from "./pages/Admin/Categorys/AdminCategoryAdd";
+import AdminCategoryEdit from "./pages/Admin/Categorys/AdminCategoryEdit";
+
 function App() {
   const [products, setProducts] = useState<Iproduct[]>([]);
+  const [categorys, setCategory] = useState<IproductCategory[]>([]);
   // call api  lấy dữ liệu
   useEffect(() => {
     (async () => {
-      const { data } = await getAllProducts();
-      setProducts(data);
+      const { data: { docs } } = await getAllProducts();
+      const { data } = await getAllProductCategory();
+      setCategory(data)
+      setProducts(docs);
     })();
   }, []);
   // xóa sản phẩm
@@ -39,19 +47,49 @@ function App() {
       setProducts(products.filter((product) => product._id !== id));
     });
   };
+  // xóa sản category
+  const onHandDeleteCategory = async (id: number | string) => {
+    await deleteCategory(id).then(() => {
+      setCategory(categorys.filter((category) => category._id !== id));
+    });
+  };
   //add sản phẩm
   const onHandAddProduct = async (product: Iproduct) => {
-    await addProduct(product).then(() => {
-      setProducts([...products, product]);
-    });
+    await addProduct(product);
+    await getAllProducts().then(({ data: { docs } }) => {
+      setProducts(docs);
+    })
+
+  };
+
+  //add sản category
+  const onHandAddCategory = async (category: IproductCategory) => {
+    await addCategory(category)
+    await getAllProductCategory().then(({ data }) => {
+      setCategory(data);
+    })
   };
   // sửa sản phẩm
   const onHandEditProduct = async (data: Iproduct, id: string | number) => {
     await updateProduct(data, id).then(() => {
-      setProducts(
-        products.map((product) => (product._id === data._id ? data : product))
-      );
+      const newProducts = products.map((product) =>
+        product._id === (data._id ?? id) ? data : product
+      )
     });
+    await getAllProducts().then(({ data: { docs } }) => {
+      setProducts(docs);
+    })
+  };
+  // sửa  category
+  const onHandEditCategory = async (data: IproductCategory, id: string | number) => {
+    await updateCategory(data, id).then(() => {
+      const newProducts = categorys.map((category) =>
+        category._id === (data._id ?? id) ? data : category
+      )
+    });
+    await getAllProductCategory().then(({ data: { docs } }) => {
+      setCategory(docs);
+    })
   };
   return (
     <div className="App">
@@ -83,7 +121,20 @@ function App() {
             path="products/:id/update"
             element={<AdminEditProduct onEdit={onHandEditProduct} />}
           />
+          <Route
+            path="categorys"
+            element={<AdminCategory categorys={categorys} onRemove={onHandDeleteCategory} />}
+          />
+          <Route
+            path="categorys/add"
+            element={<AdminCategoryAdd onAdd={onHandAddCategory} />}
+          />
+          <Route
+            path="categorys/:id/update"
+            element={<AdminCategoryEdit onEdit={onHandEditCategory} />}
+          />
         </Route>
+
       </Routes>
     </div>
   );

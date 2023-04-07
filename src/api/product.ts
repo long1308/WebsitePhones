@@ -8,6 +8,13 @@ export const getAllProducts = () =>{
         }
     });
 }
+export const getOneProducts = (id:string|number) =>{
+    return insntance.get("/products/"+id,{
+        headers:{
+            Authorization: `Bearer ${user.accessToken}`
+        }
+    });
+}
 export const deleteProduct = (id:number|string) =>{
     return insntance.delete(`/products/${id}`,{
         headers: {

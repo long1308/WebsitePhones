@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
@@ -35,8 +36,8 @@ const Sideber = (props: Props) => {
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 ">
           <ul className="space-y-2 ">
             <li>
-              <a
-                href="#"
+              <Link
+                to={`/admin/products`}
                 className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-200"
               >
                 <svg
@@ -50,11 +51,11 @@ const Sideber = (props: Props) => {
                   <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
                 </svg>
                 <span className="ml-3">Dashboard</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                to={`/admin/categorys`}
                 className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-200"
               >
                 <svg
@@ -72,8 +73,8 @@ const Sideber = (props: Props) => {
                     d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
                   ></path>
                 </svg>
-                <span className="ml-3">Điện Thoại</span>
-              </a>
+                <span className="ml-3">Danh mục</span>
+              </Link>
             </li>
             <li>
               <a
