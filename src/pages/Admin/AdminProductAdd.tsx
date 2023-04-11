@@ -1,12 +1,13 @@
 import React from "react";
-import { Iproduct } from "../../interfaces/product";
+import { Iproduct, IproductCategory } from "../../interfaces/product";
 import { useForm, SubmitHandler } from "react-hook-form";
-import {  Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 type AdminProductAddProps = {
   onAdd: (product: Iproduct) => void;
+  categorys: IproductCategory[]
 };
 
-const AdminProductAdd = ({ onAdd }: AdminProductAddProps) => {
+const AdminProductAdd = ({ onAdd, categorys }: AdminProductAddProps) => {
   const navigate = useNavigate()
   const {
     register,
@@ -17,7 +18,6 @@ const AdminProductAdd = ({ onAdd }: AdminProductAddProps) => {
   const onSubmit: SubmitHandler<Iproduct> = (inputAdd: Iproduct) => {
     onAdd(inputAdd)
     console.log(inputAdd);
-    
     navigate('/admin/products')
   };
 
@@ -75,6 +75,18 @@ const AdminProductAdd = ({ onAdd }: AdminProductAddProps) => {
             Trường Price phải là số
           </small>
         )}
+      </div>
+
+      <div>
+        <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Chọn Danh Mục</label>
+        <select {...register('categoryId')} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+          {categorys.map((category) => (
+            <option key={category._id} value={category._id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <label htmlFor="desc">Description</label>

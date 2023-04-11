@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { getOneProductCategory } from "../../../api/categorys";
 type AdminEditProductProps = {
-    onEdit: (product: IproductCategory, id: string | number) => void;
+    onEdit: (category: IproductCategory, id: string | number) => void;
 };
 
 const AdminCategoryEdit = ({ onEdit }: AdminEditProductProps) => {
@@ -14,7 +14,6 @@ const AdminCategoryEdit = ({ onEdit }: AdminEditProductProps) => {
         const { data } = await getOneProductCategory(id)
         return data
     }
-    const [product, setProduct] = useState<IproductCategory>({} as IproductCategory)
     const {
         handleSubmit,
         register,
@@ -28,8 +27,8 @@ const AdminCategoryEdit = ({ onEdit }: AdminEditProductProps) => {
     });
 
 
-    const onSubmit: SubmitHandler<IproductCategory> = ({ _id, updatedAt, createdAt,products, ...inputUpdate }: IproductCategory) => {
-        console.log(inputUpdate);
+    const onSubmit: SubmitHandler<IproductCategory> = ({ _id, updatedAt, createdAt, products, ...inputUpdate }: IproductCategory) => {
+        // console.log(inputUpdate);
         // console.log(id);
         onEdit(inputUpdate, id!);
         navigate('/admin/categorys')

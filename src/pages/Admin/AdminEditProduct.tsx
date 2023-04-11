@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Iproduct } from "../../interfaces/product";
+import { Iproduct, IproductCategory } from "../../interfaces/product";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { getOneProducts } from "../../api/product";
 type AdminEditProductProps = {
   onEdit: (product: Iproduct, id: string | number) => void;
+  categorys: IproductCategory[]
 };
 
-const AdminEditProduct = ({ onEdit }: AdminEditProductProps) => {
+const AdminEditProduct = ({ onEdit, categorys }: AdminEditProductProps) => {
   const navigate = useNavigate()
   const { id } = useParams();
   const fetchProductById = async (id: string | number) => {
@@ -28,7 +29,7 @@ const AdminEditProduct = ({ onEdit }: AdminEditProductProps) => {
   });
 
 
-  const onSubmit: SubmitHandler<Iproduct> = ({ _id, categoryId, updatedAt, createdAt, ...inputUpdate }: Iproduct) => {
+  const onSubmit: SubmitHandler<Iproduct> = ({ _id, updatedAt, createdAt, ...inputUpdate }: Iproduct) => {
     console.log(inputUpdate);
     // console.log(id);
     onEdit(inputUpdate, id!);
@@ -87,6 +88,16 @@ const AdminEditProduct = ({ onEdit }: AdminEditProductProps) => {
             Trường Price phải là số
           </small>
         )}
+      </div>
+      <div>
+        <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Chọn Danh Mục</label>
+        <select {...register('categoryId')} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          {categorys.map((category) => (
+            <option key={category._id} value={category._id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <label htmlFor="desc">Description</label>

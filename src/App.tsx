@@ -23,11 +23,13 @@ import AdminEditProduct from "./pages/Admin/AdminEditProduct";
 import HomePages from "./pages/Client/HomePage";
 import ProductDetail from "./pages/Client/ProductDetail";
 import DashBoardPage from "./pages/Admin/DashBoardPage";
-
 import { addCategory, deleteCategory, getAllProductCategory, updateCategory } from "./api/categorys";
 import AdminCategory from "./pages/Admin/Categorys/AdminCategory";
 import AdminCategoryAdd from "./pages/Admin/Categorys/AdminCategoryAdd";
 import AdminCategoryEdit from "./pages/Admin/Categorys/AdminCategoryEdit";
+import NotFound from "./pages/Client/NotFound";
+import PrivateRouter from "./components/PrivateRouter";
+
 
 function App() {
   const [products, setProducts] = useState<Iproduct[]>([]);
@@ -35,10 +37,12 @@ function App() {
   // call api  lấy dữ liệu
   useEffect(() => {
     (async () => {
-      const { data: { docs } } = await getAllProducts();
-      const { data } = await getAllProductCategory();
-      setCategory(data)
-      setProducts(docs);
+      await getAllProducts().then(({ data: { docs } }) => {
+        setProducts(docs);
+      })
+      await getAllProductCategory().then(({ data }) => {
+        setCategory(data)
+      })
     })();
   }, []);
   // xóa sản phẩm
@@ -87,22 +91,25 @@ function App() {
         category._id === (data._id ?? id) ? data : category
       )
     });
-    await getAllProductCategory().then(({ data: { docs } }) => {
-      setCategory(docs);
+    await getAllProductCategory().then(({ data }) => {
+      setCategory(data);
     })
   };
   return (
     <div className="App">
       <Routes>
         {/* client */}
+        <Route path="*" element={<NotFound />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<BaseLayout />}>
           <Route index element={<HomePages />} />
-          <Route path="signin" element={<Signin />} />
-          <Route path="signup" element={<Signup />} />
           <Route path="products/:id" element={<ProductDetail />} />
         </Route>
         {/* admin */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<PrivateRouter>
+          <AdminLayout />
+        </PrivateRouter>}>
           <Route index element={<DashBoardPage />} />
           <Route
             path="products"
@@ -110,16 +117,17 @@ function App() {
               <AdminProduct
                 products={products}
                 onRemove={onHandDeleteProduct}
+                categorys={categorys}
               />
             }
           />
           <Route
             path="products/add"
-            element={<AdminProductAdd onAdd={onHandAddProduct} />}
+            element={<AdminProductAdd onAdd={onHandAddProduct} categorys={categorys} />}
           />
           <Route
             path="products/:id/update"
-            element={<AdminEditProduct onEdit={onHandEditProduct} />}
+            element={<AdminEditProduct onEdit={onHandEditProduct} categorys={categorys} />}
           />
           <Route
             path="categorys"

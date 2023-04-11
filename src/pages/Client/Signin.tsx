@@ -3,19 +3,24 @@
 import { useForm, SubmitHandler } from "react-hook-form"
 import { signin } from "../../api/auth"
 import { IuserSignin } from "../../interfaces/auth"
+import { authenticated } from "../../utils/localStroage"
+import { useNavigate } from "react-router-dom"
 type Props = {}
 
 const Signin = (props: Props) => {
+  const navigate = useNavigate()
   // sử dụng các hook form  destructuring  lấy ra 
   const { register, handleSubmit, formState: { errors } } = useForm<IuserSignin>()
   // hàm sử lý form 
-  const onSubmit: SubmitHandler<IuserSignin> = (inputData: any) => {
-    console.log(inputData);
+  const onSubmit: SubmitHandler<IuserSignin> = async (inputData: any) => {
+    try {
+      const repsonse = await signin(inputData);
+      console.log(repsonse);
+      localStorage.setItem("accessToken", JSON.stringify(repsonse.data.accessToken))
 
-    (async () => {
-      const { data } = await signin(inputData)
-      localStorage.setItem("user", JSON.stringify(data))
-    })()
+      authenticated(repsonse.data.user);
+      navigate("/");
+    } catch (error) { }
   }
   return (
     <section className="bg-gray-50 ">

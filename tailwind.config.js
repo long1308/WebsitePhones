@@ -19,7 +19,8 @@ module.exports = {
         "red-secondary": "#707070",
       },
       fontFamily: {
-        font_san: [
+        sans: [
+          "system-ui",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",

@@ -9,14 +9,14 @@ type AdminCategoryProps = {
 };
 
 const AdminCategory = ({ categorys, onRemove }: AdminCategoryProps) => {
-    if (!categorys) return <h1>Loading List Products.....</h1>;
+    if (!categorys) return <h1>Loading List Category.....</h1>;
 
     return (
         <div className="flex flex-col mt-8 ml-8">
             <div className="overflow-x-auto ">
                 <div className="inline-block min-w-full py-2 ">
                     <Link
-                        className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+                        className="focus:outline-none text-white bg-yellow-400 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 "
                         to={"/admin/categorys/add"}
                     >
                         Add New Categorys
@@ -42,16 +42,15 @@ const AdminCategory = ({ categorys, onRemove }: AdminCategoryProps) => {
                                         <th className="whitespace-nowrap px-6 py-4 font-medium">
                                             {index + 1}
                                         </th>
-                                        <td className="whitespace-nowrap px-6 py-4">
-                                            {category.name}
+                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
+                                            <Link
+                                                key={category._id}
+                                                to={`/admin/categorys/${category._id}`}
+                                            >
+                                                {category.name}
+                                            </Link>
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4">
-                                            {/* <button
-                        className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                        onClick={() => onRemove(category._id!)}
-                      >
-                        Remove
-                      </button> */}
+                                        <td className="whitespace-nowrap px-6 py-4 font-medium">
                                             <Popconfirm
                                                 placement="topLeft"
                                                 title={"Bạn có chắc chắn muốn xóa không"}
@@ -59,6 +58,7 @@ const AdminCategory = ({ categorys, onRemove }: AdminCategoryProps) => {
                                                 onConfirm={() => onRemove(category._id!)}
                                                 okText="Yes"
                                                 cancelText="No"
+                                                okButtonProps={{ style: { background: 'red' } }}
                                             >
                                                 <Button type="primary" danger>
                                                     Delete
